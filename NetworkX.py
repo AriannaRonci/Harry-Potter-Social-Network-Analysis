@@ -23,22 +23,32 @@ graph = nx.Graph()
 graph.add_edges_from(edges_list)
 pos = nx.spring_layout(graph)
 
-plt.figure(3, figsize=(20, 20))
+'''plt.figure(3, figsize=(20, 20))
 nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200)
 nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, edge_color='b', width=0.5)
 nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, font_size=16,
                         font_family='sans-serif', font_weight='bold')
 plt.savefig('grafici/network_kamada')
-plt.show()
+plt.show()'''
 
 #betweeness centrality
 bet = nx.betweenness_centrality(graph)
 
 bc_df = pd.DataFrame(bet.items(), columns=["keys", "values"])
-
 plot_order = bc_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
+
 
 plt.figure(figsize=(16,8))
 sns.barplot(x=list(bet.keys()), y=list(bet.values()), order=plot_order)
 plt.show()
 
+clos = nx.closeness_centrality(graph)
+
+clos_df = pd.DataFrame(clos.items(), columns=["keys", "values"])
+plot_order = clos_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
+
+print(plot_order)
+
+plt.figure(figsize=(16, 8))
+sns.barplot(x=list(clos.keys()), y=list(clos.values()), order=plot_order)
+plt.show()
