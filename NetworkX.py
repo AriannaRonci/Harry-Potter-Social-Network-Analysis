@@ -5,6 +5,15 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
 
+def draw_network(pos, type):
+    plt.figure(3, figsize=(15, 15))
+    nx.draw_networkx_nodes(graph, pos, node_size=200)
+    nx.draw_networkx_edges(graph, pos, edgelist=edges_list, edge_color='b', width=0.5)
+    nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=16,
+                            font_family='sans-serif', font_weight='bold')
+    plt.savefig("grafici/network_" + type)
+    plt.show()
+
 def plot_centrality_by_key(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
     if (centrality_type == "Closeness"):
@@ -63,16 +72,21 @@ for i in range(0, len(source_list)):
 
 graph = nx.Graph()
 graph.add_edges_from(edges_list)
-pos = nx.spring_layout(graph)
+#pos = nx.spring_layout(graph)
 
-plt.figure(3, figsize=(20, 20))
+draw_network(nx.spring_layout(graph), "spring")
+draw_network(nx.kamada_kawai_layout(graph), "kamada")
+draw_network(nx.random_layout(graph), "random")
+draw_network(nx.shell_layout(graph), "shell")
+draw_network(nx.spiral_layout(graph), "spiral")
+
+'''plt.figure(3, figsize=(20, 20))
 nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200)
 nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, edge_color='b', width=0.5)
 nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, font_size=16,
                         font_family='sans-serif', font_weight='bold')
 plt.savefig('grafici/network_kamada')
-plt.show()
-
+plt.show()'''
 
 '''
 #closeness centrality
@@ -110,7 +124,7 @@ plt.figure(figsize=(18, 8))
 sns.histplot(list(clos.values()), kde=True)
 plt.show()'''
 
-plot_centrality_by_key("Betweeness", graph)
+'''plot_centrality_by_key("Betweeness", graph)
 plot_centrality_by_key("Closeness", graph)
 plot_centrality_by_key("Degree", graph)
 plot_centrality_by_key("Eigenvector", graph)
@@ -118,4 +132,7 @@ plot_centrality_by_key("Eigenvector", graph)
 plot_centrality_distribution("Betweeness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
-plot_centrality_distribution("Eigenvector", graph)
+plot_centrality_distribution("Eigenvector", graph)'''
+
+
+
