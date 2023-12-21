@@ -15,12 +15,16 @@ def plot_centrality_by_key(centrality_type, graph):
         centrality = nx.eigenvector_centrality(graph)
 
     centrality_df = pd.DataFrame(centrality.items(), columns=["keys", "values"])
+    centrality_df["keys"] = centrality_df["keys"].replace(mapping, regex=True)
     plot_order = centrality_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
     plt.figure(figsize=(18, 8))
-    sns.barplot(x=list(centrality.keys()), y=list(centrality.values()), order=plot_order)
+    sns.barplot(x=centrality_df["keys"].tolist(), y=centrality_df["values"].tolist(), order=plot_order)
+    plt.xticks(rotation=80)
+    plt.xlabel("Characters")
     plt.savefig("grafici/" + centrality_type + ".png")
     plt.title(centrality_type + " Centrality")
+    plt.tight_layout()
     plt.show()
 
 def plot_centrality_distribution(centrality_type, graph):
@@ -57,13 +61,13 @@ graph = nx.Graph()
 graph.add_edges_from(edges_list)
 pos = nx.spring_layout(graph)
 
-'''plt.figure(3, figsize=(20, 20))
+plt.figure(3, figsize=(20, 20))
 nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200)
 nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, edge_color='b', width=0.5)
 nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, font_size=16,
                         font_family='sans-serif', font_weight='bold')
 plt.savefig('grafici/network_kamada')
-plt.show()'''
+plt.show()
 
 '''
 #closeness centrality
@@ -100,6 +104,11 @@ plot_order = clos_df.groupby('keys')['values'].sum().sort_values(ascending=False
 plt.figure(figsize=(18, 8))
 sns.histplot(list(clos.values()), kde=True)
 plt.show()'''
+
+plot_centrality_by_key("Betweeness", graph)
+plot_centrality_by_key("Closeness", graph)
+plot_centrality_by_key("Degree", graph)
+plot_centrality_by_key("Eigenvector", graph)
 
 plot_centrality_distribution("Betweeness", graph)
 plot_centrality_distribution("Closeness", graph)
