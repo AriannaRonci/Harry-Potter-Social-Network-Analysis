@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
 
-def plot_centrality(centrality_type, graph):
+def plot_centrality_by_key(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
     if (centrality_type == "Closeness"):
         centrality = nx.closeness_centrality(graph)
@@ -20,6 +20,22 @@ def plot_centrality(centrality_type, graph):
     plt.figure(figsize=(18, 8))
     sns.barplot(x=list(centrality.keys()), y=list(centrality.values()), order=plot_order)
     plt.savefig("grafici/" + centrality_type + ".png")
+    plt.title(centrality_type + " Centrality")
+    plt.show()
+
+def plot_centrality_distribution(centrality_type, graph):
+    centrality = nx.betweenness_centrality(graph)
+    if (centrality_type == "Closeness"):
+        centrality = nx.closeness_centrality(graph)
+    elif (centrality_type == "Degree"):
+        centrality = nx.degree_centrality(graph)
+    elif (centrality_type == "Eigenvector"):
+        centrality = nx.eigenvector_centrality(graph)
+
+    plt.figure(figsize=(18, 8))
+    sns.histplot(list(centrality.values()), kde=True)
+    plt.savefig("grafici/" + centrality_type + "_distribution.png")
+    plt.title(centrality_type + " Centrality Distribution")
     plt.show()
 
 characters = pd.read_csv("data/characters.csv")
@@ -49,17 +65,7 @@ nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, fo
 plt.savefig('grafici/network_kamada')
 plt.show()'''
 
-'''#betweeness centrality
-bet = nx.betweenness_centrality(graph)
-
-bc_df = pd.DataFrame(bet.items(), columns=["keys", "values"])
-plot_order = bc_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
-
-
-plt.figure(figsize=(18,8))
-sns.barplot(x=list(bet.keys()), y=list(bet.values()), order=plot_order)
-plt.show()
-
+'''
 #closeness centrality
 clos = nx.closeness_centrality(graph)
 
@@ -77,32 +83,25 @@ plt.figure(figsize=(18,6))
 sns.barplot(x=list(clos.keys()), y=list(clos.values()), order=plot_order)
 plt.show()'''
 
-'''
-#degree centrality
-degree = nx.degree_centrality(graph)
 
-deg_df = pd.DataFrame(degree.items(), columns=["keys", "values"])
-plot_order = deg_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
-plt.figure(figsize=(18,6))
-sns.barplot(x=list(degree.keys()), y=list(degree.values()), order=plot_order)
-plt.show()
 
-#eigenvector centrality
-eigen = nx.eigenvector_centrality(graph)
-
-eigen_df = pd.DataFrame(eigen.items(), columns=["keys", "values"])
-plot_order = eigen_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
-
-plt.figure(figsize=(18,6))
-sns.barplot(x=list(eigen.keys()), y=list(eigen.values()), order=plot_order)
-plt.show()'''
-
-plot_centrality("Betweeness", graph)
+'''plot_centrality("Betweeness", graph)
 plot_centrality("Closeness", graph)
 plot_centrality("Degree", graph)
 plot_centrality("Eigenvector", graph)
+'''
 
+'''clos = nx.closeness_centrality(graph)
 
+clos_df = pd.DataFrame(clos.items(), columns=["keys", "values"])
+plot_order = clos_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
+plt.figure(figsize=(18, 8))
+sns.histplot(list(clos.values()), kde=True)
+plt.show()'''
 
+plot_centrality_distribution("Betweeness", graph)
+plot_centrality_distribution("Closeness", graph)
+plot_centrality_distribution("Degree", graph)
+plot_centrality_distribution("Eigenvector", graph)
