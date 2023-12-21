@@ -20,10 +20,11 @@ def plot_centrality_by_key(centrality_type, graph):
 
     plt.figure(figsize=(18, 8))
     sns.barplot(x=centrality_df["keys"].tolist(), y=centrality_df["values"].tolist(), order=plot_order)
-    plt.xticks(rotation=80)
-    plt.xlabel("Characters")
+    plt.xticks(rotation=80, fontsize=9)
+    plt.xlabel("Characters", fontsize=25)
+    plt.ylabel("Centrality", fontsize=25)
     plt.savefig("grafici/" + centrality_type + ".png")
-    plt.title(centrality_type + " Centrality")
+    plt.title(centrality_type + " Centrality", fontsize=36)
     plt.tight_layout()
     plt.show()
 
@@ -39,7 +40,10 @@ def plot_centrality_distribution(centrality_type, graph):
     plt.figure(figsize=(18, 8))
     sns.histplot(list(centrality.values()), kde=True)
     plt.savefig("grafici/" + centrality_type + "_distribution.png")
-    plt.title(centrality_type + " Centrality Distribution")
+    plt.xticks(rotation=80, fontsize=9)
+    plt.xlabel("Characters", fontsize=25)
+    plt.ylabel("Centrality", fontsize=25)
+    plt.title(centrality_type + " Centrality Distribution", fontsize=36)
     plt.show()
 
 characters = pd.read_csv("data/characters.csv")
@@ -68,6 +72,7 @@ nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, fo
                         font_family='sans-serif', font_weight='bold')
 plt.savefig('grafici/network_kamada')
 plt.show()
+
 
 '''
 #closeness centrality
