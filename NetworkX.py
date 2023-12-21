@@ -5,6 +5,23 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
 
+def plot_centrality(centrality_type, graph):
+    centrality = nx.betweenness_centrality(graph)
+    if (centrality_type == "Closeness"):
+        centrality = nx.closeness_centrality(graph)
+    elif (centrality_type == "Degree"):
+        centrality = nx.degree_centrality(graph)
+    elif (centrality_type == "Eigenvector"):
+        centrality = nx.eigenvector_centrality(graph)
+
+    centrality_df = pd.DataFrame(centrality.items(), columns=["keys", "values"])
+    plot_order = centrality_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
+
+    plt.figure(figsize=(18, 8))
+    sns.barplot(x=list(centrality.keys()), y=list(centrality.values()), order=plot_order)
+    plt.savefig("grafici/" + centrality_type + ".png")
+    plt.show()
+
 characters = pd.read_csv("data/characters.csv")
 mapping = dict(zip(characters.id, characters.name))
 print(mapping)
@@ -32,7 +49,7 @@ nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, fo
 plt.savefig('grafici/network_kamada')
 plt.show()'''
 
-#betweeness centrality
+'''#betweeness centrality
 bet = nx.betweenness_centrality(graph)
 
 bc_df = pd.DataFrame(bet.items(), columns=["keys", "values"])
@@ -49,17 +66,18 @@ clos = nx.closeness_centrality(graph)
 clos_df = pd.DataFrame(clos.items(), columns=["keys", "values"])
 plot_order = clos_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
-'''values = clos_df.sort_values(["values"], ascending=False)
+values = clos_df.sort_values(["values"], ascending=False)
 matplotlib.rc_file_defaults()
 print(plot_order)
 ax1 = sns.set_style(style=None, rc=None)
 fig, ax1 = plt.subplots(figsize=(12,6))
 sns.lineplot(data=values["values"], marker='o', sort=True, ax=ax1)
-ax2 = ax1.twinx()'''
+ax2 = ax1.twinx()
 plt.figure(figsize=(18,6))
 sns.barplot(x=list(clos.keys()), y=list(clos.values()), order=plot_order)
-plt.show()
+plt.show()'''
 
+'''
 #degree centrality
 degree = nx.degree_centrality(graph)
 
@@ -78,7 +96,12 @@ plot_order = eigen_df.groupby('keys')['values'].sum().sort_values(ascending=Fals
 
 plt.figure(figsize=(18,6))
 sns.barplot(x=list(eigen.keys()), y=list(eigen.values()), order=plot_order)
-plt.show()
+plt.show()'''
+
+plot_centrality("Betweeness", graph)
+plot_centrality("Closeness", graph)
+plot_centrality("Degree", graph)
+plot_centrality("Eigenvector", graph)
 
 
 
