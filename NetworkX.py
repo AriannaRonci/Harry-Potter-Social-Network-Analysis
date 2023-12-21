@@ -6,7 +6,8 @@ import matplotlib.colors as mcolors
 import seaborn as sns
 
 def draw_network(pos, type):
-    plt.figure(3, figsize=(15, 15))
+    plt.figure(figsize=(25, 25))
+    plt.figure(3, figsize=(25, 25))
     nx.draw_networkx_nodes(graph, pos, node_size=200)
     nx.draw_networkx_edges(graph, pos, edgelist=edges_list, edge_color='b', width=0.5)
     nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=16,
@@ -75,10 +76,10 @@ graph.add_edges_from(edges_list)
 #pos = nx.spring_layout(graph)
 
 draw_network(nx.spring_layout(graph), "spring")
-draw_network(nx.kamada_kawai_layout(graph), "kamada")
+'''draw_network(nx.kamada_kawai_layout(graph), "kamada")
 draw_network(nx.random_layout(graph), "random")
 draw_network(nx.shell_layout(graph), "shell")
-draw_network(nx.spiral_layout(graph), "spiral")
+draw_network(nx.spiral_layout(graph), "spiral")'''
 
 '''plt.figure(3, figsize=(20, 20))
 nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200)
