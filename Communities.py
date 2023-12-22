@@ -48,10 +48,10 @@ for node in list(graph.nodes):
 
 plt.figure(3, figsize=(25, 25))
 nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200, node_color=colors)
-nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, width=0.8)
-nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), labels=mapping, font_size=14,
+nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, width=2)
+nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), font_size=14,
                             font_family='sans-serif', font_weight='bold')
-plt.savefig("grafici/network_p")
+plt.savefig("grafici/network_communities")
 plt.show()
 
 
