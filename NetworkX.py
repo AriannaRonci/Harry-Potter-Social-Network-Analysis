@@ -1,3 +1,5 @@
+import math
+
 import matplotlib
 import pandas as pd
 import networkx as nx
@@ -130,8 +132,8 @@ graph.add_edges_from(edges_list)
 
 description(graph)
 
-'''draw_network(nx.spring_layout(graph), "spring", edges["type"])
-draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
+'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
 draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
