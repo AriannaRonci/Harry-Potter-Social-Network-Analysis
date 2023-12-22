@@ -1,10 +1,11 @@
+import math
+
 import matplotlib
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
-
 
 def description(graph):
     print('\x1B[1m' + "Numero di nodi: " + '\x1B[0m' + f"{len(graph.nodes)}")
@@ -28,9 +29,6 @@ def description(graph):
         elif len(p) > i:
             print(f"       {mapping[p[i]]}")
 
-
-
-
 def draw_network(pos, type, edges_weight):
     plt.figure(3, figsize=(25, 25))
 
@@ -50,7 +48,6 @@ def draw_network(pos, type, edges_weight):
                             font_family='sans-serif', font_weight='bold')
     plt.savefig("grafici/network_" + type)
     plt.show()
-
 
 def plot_centrality_by_key(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
@@ -74,7 +71,6 @@ def plot_centrality_by_key(centrality_type, graph):
     plt.title(centrality_type + " Centrality", fontsize=36)
     plt.tight_layout()
     plt.show()
-
 
 def plot_centrality_distribution(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
@@ -134,8 +130,10 @@ for i in range(0, len(source_list)):
 graph = nx.Graph()
 graph.add_edges_from(edges_list)
 
-'''draw_network(nx.spring_layout(graph), "spring", edges["type"])
-draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+description(graph)
+
+draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
+'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
 draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
@@ -151,9 +149,9 @@ plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
 plot_centrality_distribution("Eigenvector", graph)'''
 
-draw(graph, nx.spring_layout(graph), 'Betweeness')
+'''draw(graph, nx.spring_layout(graph), 'Betweeness')
 draw(graph, nx.spring_layout(graph), 'Closeness')
 draw(graph, nx.spring_layout(graph), 'Degree')
-draw(graph, nx.spring_layout(graph), 'Eigenvector')
+draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
 
 
