@@ -6,7 +6,6 @@ import matplotlib.colors as mcolors
 import seaborn as sns
 
 def draw_network(pos, type, edges_weight):
-    plt.figure(figsize=(25, 25))
     plt.figure(3, figsize=(25, 25))
 
     options = ['#EE4B2B', '#4682B4']
@@ -76,7 +75,7 @@ def draw(G, pos, measure_name):
     elif (measure_name == "Eigenvector"):
         measures = nx.eigenvector_centrality(graph)
 
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=250, cmap=plt.cm.plasma,
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=70, cmap=plt.cm.plasma,
                                    node_color=list(measures.values()),
                                    nodelist=measures.keys())
     nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1))
@@ -92,7 +91,6 @@ def draw(G, pos, measure_name):
 
 characters = pd.read_csv("data/characters.csv")
 mapping = dict(zip(characters.id, characters.name))
-print(mapping)
 
 edges = pd.read_csv("data/relations.csv")
 
@@ -108,11 +106,11 @@ for i in range(0, len(source_list)):
 graph = nx.Graph()
 graph.add_edges_from(edges_list)
 
-draw_network(nx.spring_layout(graph), "spring", edges["type"])
+'''draw_network(nx.spring_layout(graph), "spring", edges["type"])
 draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
-draw_network(nx.spiral_layout(graph), "spiral", edges["type"])
+draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
 
 
 '''plot_centrality_by_key("Betweeness", graph)
@@ -123,11 +121,11 @@ plot_centrality_by_key("Eigenvector", graph)
 plot_centrality_distribution("Betweeness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
-plot_centrality_distribution("Eigenvector", graph)
+plot_centrality_distribution("Eigenvector", graph)'''
 
 draw(graph, nx.spring_layout(graph), 'Betweeness')
 draw(graph, nx.spring_layout(graph), 'Closeness')
 draw(graph, nx.spring_layout(graph), 'Degree')
-draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
+draw(graph, nx.spring_layout(graph), 'Eigenvector')
 
 
