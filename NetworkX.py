@@ -145,31 +145,27 @@ graph = nx.Graph()
 graph.add_edges_from(edges_list)
 
 description(graph)
-'''
+
 draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
-draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
-draw_network(nx.spiral_layout(graph), "spiral", edges["type"])
-'''
+draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
 
 
 '''plot_centrality_by_key("Betweeness", graph)
 plot_centrality_by_key("Closeness", graph)
 plot_centrality_by_key("Degree", graph)
 plot_centrality_by_key("Eigenvector", graph)
-'''
-'''
-plot_centrality_distribution("Betweenness", graph)
+
+plot_centrality_distribution("Betweeness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
-plot_centrality_distribution("Eigenvector", graph)
-'''
-'''
-draw(graph, nx.spring_layout(graph), 'Betweenness', 0.30)
-draw(graph, nx.spring_layout(graph), 'Closeness', 0.90)
-draw(graph, nx.spring_layout(graph), 'Degree', 0.80)
-draw(graph, nx.spring_layout(graph), 'Eigenvector', 0.40)
-'''
-draw(graph, nx.spring_layout(graph), 'Eigenvector', 0.35)
+plot_centrality_distribution("Eigenvector", graph)'''
+
+'''draw(graph, nx.spring_layout(graph), 'Betweeness')
+draw(graph, nx.spring_layout(graph), 'Closeness')
+draw(graph, nx.spring_layout(graph), 'Degree')
+draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
+
 

@@ -40,19 +40,33 @@ print(df.loc[df["community"]==3])
 print(df.loc[df["community"]==4])
 
 colors = []
-communities_colors=['#EE4B2B', '#4682B4','#BB33FF', '#33FF49']
+communities_colors=['#EE4B2B', '#FFEA00','#BB33FF', '#33FF49']
 for node in list(graph.nodes):
     for index, row in df.iterrows():
         if node==row["component"]:
             colors.append(communities_colors[row["community"]-1])
 
 plt.figure(3, figsize=(25, 25))
-nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=200, node_color=colors)
+nx.draw_networkx_nodes(graph, nx.kamada_kawai_layout(graph), node_size=1000, node_color=colors)
 nx.draw_networkx_edges(graph, nx.kamada_kawai_layout(graph), edgelist=edges_list, width=2)
 nx.draw_networkx_labels(graph, nx.kamada_kawai_layout(graph), font_size=14,
                             font_family='sans-serif', font_weight='bold')
-plt.savefig("grafici/network_communities")
+plt.box(False)
+plt.savefig("grafici/network_communities", bbox_inches="tight")
 plt.show()
+
+
+df["component"] = df["component"].replace(mapping, regex=True)
+
+print("I personaggi appartenenti alla comunità 1 sono:")
+print(df.loc[df["community"]==1])
+print("I personaggi appartenenti alla comunità 2 sono:")
+print(df.loc[df["community"]==2])
+print("I personaggi appartenenti alla comunità 3 sono:")
+print(df.loc[df["community"]==3])
+print("I personaggi appartenenti alla comunità 4 sono:")
+print(df.loc[df["community"]==4])
+
 
 
 
