@@ -16,35 +16,19 @@ edges_pos = edges.loc[edges["type"] == 1]
 source_list = edges_pos["source"].tolist()
 target_list = edges_pos["target"].tolist()
 
-edges_neg = edges.loc[edges["type"] == -1]
-source_neg = edges_neg["source"].tolist()
-target_neg = edges_neg["target"].tolist()
-
 edges_list_pos = []
 for i in range(0, len(source_list)):
     edges_list_pos.append((source_list[i], target_list[i]))
-
-edges_list_neg = []
-for i in range(0, len(source_neg)):
-    edges_list_pos.append((source_neg[i], target_neg[i]))
 
 graph = nx.Graph()
 graph.add_edges_from(edges_list_pos)
 
 graph = nx.to_directed(graph)
 
-graph_neg = nx.Graph()
-graph_neg.add_edges_from(edges_list_neg)
-
-graph_neg = nx.to_directed(graph_neg)
-
 hp_triads = []
 voldemort_triads = []
 
-hp_triads_neg = []
-voldemort_triads_neg = []
-
-voldemort_ = []
+'''voldemort_ = []
 for triad in nx.all_triads(graph):
     try:
         if triad.has_node(45) and triad.has_node(47):
@@ -63,7 +47,7 @@ for triad in nx.all_triads(graph):
 new_voldemort = []
 for elem in hp_triads:
     if 45 in elem and 47 in elem:
-        new_voldemort.append(elem)
+        new_voldemort.append(elem)'''
 
 
 for triad in nx.all_triads(graph):
@@ -73,7 +57,7 @@ for triad in nx.all_triads(graph):
                     or nx.triad_type(triad)=='120U' or nx.triad_type(triad)=='120C')\
                     or nx.triad_type(triad)=='030C' or nx.triad_type(triad)=='030T':
                 hp_triads.append(list(triad.nodes))
-        if triad.has_node(45) and triad.has_node(47):
+        if triad.has_node(45):
             if (nx.triad_type(triad) == '120D' or nx.triad_type(triad) == '210' or nx.triad_type(triad) == '300'
                 or nx.triad_type(triad) == '120U' or nx.triad_type(triad) == '120C') \
                     or nx.triad_type(triad) == '030C' or nx.triad_type(triad) == '030D':
@@ -92,15 +76,14 @@ print(harry_df)
 
 voldemort_df = pd.DataFrame(voldemort_triads, columns=["node1", "node2", "node3"])
 voldemort_df = voldemort_df.replace(mapping, regex=True)
-print("Le triadi chiuse di relazioni positive contenenti sia Voldemort che Snape sono:")
+print("Le triadi chiuse di relazioni positive contenenti Voldemort sono:")
 print(voldemort_df)
 
 '''triadic_census = nx.triadic_census(graph)
 for key, value in triadic_census.items():
     print(f"{key}: {value}")
 
-
-
 triadic_census.keys()
 nx.triad_type()'''
+
 
