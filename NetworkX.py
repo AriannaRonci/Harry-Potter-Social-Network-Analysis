@@ -46,7 +46,8 @@ def draw_network(pos, type, edges_weight):
     nx.draw_networkx_edges(graph, pos, edgelist=edges_list, edge_color=colors, width=0.8)
     nx.draw_networkx_labels(graph, pos, labels=mapping, font_size=14,
                             font_family='sans-serif', font_weight='bold')
-    plt.savefig("grafici/network_" + type)
+    plt.box(False)
+    plt.savefig("grafici/network_" + type, bbox_inches="tight")
     plt.show()
 
 def plot_centrality_by_key(centrality_type, graph):
@@ -67,9 +68,10 @@ def plot_centrality_by_key(centrality_type, graph):
     plt.xticks(rotation=80, fontsize=9)
     plt.xlabel("Characters", fontsize=25)
     plt.ylabel("Centrality", fontsize=25)
-    plt.savefig("grafici/" + centrality_type + ".png")
-    plt.title(centrality_type + " Centrality", fontsize=36)
     plt.tight_layout()
+    plt.title(centrality_type + " Centrality", fontsize=36)
+    plt.subplots_adjust(top=0.88)
+    plt.savefig("grafici/" + centrality_type + ".png", bbox_inches="tight", dpi=300)
     plt.show()
 
 def plot_centrality_distribution(centrality_type, graph):
@@ -83,11 +85,12 @@ def plot_centrality_distribution(centrality_type, graph):
 
     plt.figure(figsize=(18, 8))
     sns.histplot(list(centrality.values()), kde=True)
-    plt.savefig("grafici/" + centrality_type + "_distribution.png")
-    plt.xticks(rotation=80, fontsize=9)
-    plt.xlabel("Characters", fontsize=25)
-    plt.ylabel("Centrality", fontsize=25)
+    plt.xticks(fontsize=16)
+    plt.yticks(fontsize=16)
+    plt.ylabel("Count", fontsize=25)
     plt.title(centrality_type + " Centrality Distribution", fontsize=36)
+    plt.subplots_adjust(top=0.88, bottom=0.1)
+    plt.savefig("grafici/" + centrality_type + "_distribution.png", bbox_inches="tight",  dpi=300)
     plt.show()
 
 def draw(G, pos, measure_name):
@@ -107,7 +110,7 @@ def draw(G, pos, measure_name):
     # labels = nx.draw_networkx_labels(G, pos)
     edges = nx.draw_networkx_edges(G, pos)
 
-    plt.title(measure_name)
+    plt.title(measure_name + "Centrality")
     plt.colorbar(nodes)
     plt.axis('off')
     plt.savefig("grafici/heatmap_" + measure_name)
@@ -122,6 +125,7 @@ edges["type"] = edges["type"].replace("+", 1).replace("-", -1)
 
 source_list = edges["source"].tolist()
 target_list = edges["target"].tolist()
+type_list = edges["type"].tolist()
 
 edges_list = []
 for i in range(0, len(source_list)):
@@ -133,23 +137,22 @@ graph.add_edges_from(edges_list)
 description(graph)
 
 draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
-'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
-draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
+draw_network(nx.spiral_layout(graph), "spiral", edges["type"])
 
-
-'''plot_centrality_by_key("Betweeness", graph)
+'''plot_centrality_by_key("Betweenness", graph)
 plot_centrality_by_key("Closeness", graph)
 plot_centrality_by_key("Degree", graph)
 plot_centrality_by_key("Eigenvector", graph)
 
-plot_centrality_distribution("Betweeness", graph)
+plot_centrality_distribution("Betweenness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
-plot_centrality_distribution("Eigenvector", graph)'''
+plot_centrality_distribution("Eigenvector", graph)
 
-'''draw(graph, nx.spring_layout(graph), 'Betweeness')
+draw(graph, nx.spring_layout(graph), 'Betweenness')
 draw(graph, nx.spring_layout(graph), 'Closeness')
 draw(graph, nx.spring_layout(graph), 'Degree')
 draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
