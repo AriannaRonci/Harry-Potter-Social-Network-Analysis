@@ -1,11 +1,11 @@
 import math
-
-import matplotlib
 import pandas as pd
 import networkx as nx
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
+import numpy as np
 
 def description(graph):
     print('\x1B[1m' + "Numero di nodi: " + '\x1B[0m' + f"{len(graph.nodes)}")
@@ -62,15 +62,15 @@ def plot_centrality_by_key(centrality_type, graph):
     centrality_df["keys"] = centrality_df["keys"].replace(mapping, regex=True)
     plot_order = centrality_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
-    plt.figure(figsize=(18, 8))
+    plt.figure(figsize=(10, 6))
     sns.barplot(x=centrality_df["keys"].tolist(), y=centrality_df["values"].tolist(), order=plot_order)
-    plt.xticks(rotation=80, fontsize=9)
-    plt.xlabel("Characters", fontsize=25)
-    plt.ylabel("Centrality", fontsize=25)
+    plt.xticks(rotation=80, fontsize=8)
+    plt.xlabel("Characters", fontsize=12)
+    plt.ylabel("Centrality", fontsize=12)
+    plt.title(centrality_type + " Centrality", fontsize=15)
+    #plt.tight_layout()
     plt.savefig("grafici/" + centrality_type + ".png")
-    plt.title(centrality_type + " Centrality", fontsize=36)
-    plt.tight_layout()
-    plt.show()
+    #plt.show()
 
 def plot_centrality_distribution(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
@@ -81,36 +81,49 @@ def plot_centrality_distribution(centrality_type, graph):
     elif (centrality_type == "Eigenvector"):
         centrality = nx.eigenvector_centrality(graph)
 
-    plt.figure(figsize=(18, 8))
-    sns.histplot(list(centrality.values()), kde=True)
-    plt.savefig("grafici/" + centrality_type + "_distribution.png")
-    plt.xticks(rotation=80, fontsize=9)
-    plt.xlabel("Characters", fontsize=25)
-    plt.ylabel("Centrality", fontsize=25)
-    plt.title(centrality_type + " Centrality Distribution", fontsize=36)
-    plt.show()
+    n = len(list(centrality.values()))
+    bin_width = 3.5 * np.std(list(centrality.values())) / (n ** (1 / 3))
+    numero_bin = int((max(list(centrality.values())) - min(list(centrality.values()))) / bin_width)*3
 
-def draw(G, pos, measure_name):
-    measures = nx.degree_centrality(graph)
-    if (measure_name == "Closeness"):
+    plt.figure(figsize=(12, 5))
+    sns.histplot(list(centrality.values()), kde=True, bins=numero_bin)
+    plt.xticks(rotation=80, fontsize=8)
+    plt.xlabel("Characters", fontsize=11)
+    plt.ylabel("Centrality", fontsize=11)
+    plt.title(centrality_type + " Centrality Distribution", fontsize=14)
+    plt.savefig("grafici/" + centrality_type + "_distribution.png")
+    #plt.show()
+
+def draw(G, pos, measure_name, max):
+    measure = None
+    if measure_name == "Betweenness":
+        measures = nx.betweenness_centrality(graph)
+    if measure_name == "Closeness":
         measures = nx.closeness_centrality(graph)
-    elif (measure_name == "Degree"):
+    elif measure_name == "Degree":
         measures = nx.degree_centrality(graph)
-    elif (measure_name == "Eigenvector"):
+    elif measure_name == "Eigenvector":
         measures = nx.eigenvector_centrality(graph)
 
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=70, cmap=plt.cm.plasma,
-                                   node_color=list(measures.values()),
-                                   nodelist=measures.keys())
-    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1))
+    centrality_values = [measures[node] for node in G.nodes]
 
-    # labels = nx.draw_networkx_labels(G, pos)
-    edges = nx.draw_networkx_edges(G, pos)
+    # Disegnare il grafo con i nodi colorati in base alla centralità
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=70, node_color=centrality_values, cmap=plt.cm.plasma)
+    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.1, linscale=1))
+    nx.draw_networkx_edges(graph, pos)
 
-    plt.title(measure_name)
-    plt.colorbar(nodes)
+    N = 5
+    cmap = plt.get_cmap(plt.cm.plasma, N)
+    norm = mpl.colors.Normalize(vmin=0, vmax=max)
+
+    # creating ScalarMappable
+    sm = mpl.cm.ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+
+    plt.colorbar(sm, ticks=np.linspace(0, max, N), ax=plt.gca())
+
     plt.axis('off')
-    plt.savefig("grafici/heatmap_" + measure_name)
+    plt.savefig("grafici/heatmap_" + measure_name + ".png")
     plt.show()
 
 characters = pd.read_csv("data/characters.csv")
@@ -120,6 +133,7 @@ edges = pd.read_csv("data/relations.csv")
 
 edges["type"] = edges["type"].replace("+", 1).replace("-", -1)
 
+type = edges["type"].tolist()
 source_list = edges["source"].tolist()
 target_list = edges["target"].tolist()
 
@@ -131,27 +145,31 @@ graph = nx.Graph()
 graph.add_edges_from(edges_list)
 
 description(graph)
-
+'''
 draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
-'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
-draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
+draw_network(nx.spiral_layout(graph), "spiral", edges["type"])
+'''
 
 
 '''plot_centrality_by_key("Betweeness", graph)
 plot_centrality_by_key("Closeness", graph)
 plot_centrality_by_key("Degree", graph)
 plot_centrality_by_key("Eigenvector", graph)
-
-plot_centrality_distribution("Betweeness", graph)
+'''
+'''
+plot_centrality_distribution("Betweenness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
-plot_centrality_distribution("Eigenvector", graph)'''
-
-'''draw(graph, nx.spring_layout(graph), 'Betweeness')
-draw(graph, nx.spring_layout(graph), 'Closeness')
-draw(graph, nx.spring_layout(graph), 'Degree')
-draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
-
+plot_centrality_distribution("Eigenvector", graph)
+'''
+'''
+draw(graph, nx.spring_layout(graph), 'Betweenness', 0.30)
+draw(graph, nx.spring_layout(graph), 'Closeness', 0.90)
+draw(graph, nx.spring_layout(graph), 'Degree', 0.80)
+draw(graph, nx.spring_layout(graph), 'Eigenvector', 0.40)
+'''
+draw(graph, nx.spring_layout(graph), 'Eigenvector', 0.35)
 
