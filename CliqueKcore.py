@@ -32,15 +32,23 @@ for c in nx.find_cliques(graph):
 
 
 ego_graph_hp = nx.ego_graph(graph, 39, radius=1, center=True, undirected=True, distance=None)
+ego_graph_hp = nx.relabel_nodes(ego_graph_hp, mapping)
 
 # Draw graph
 pos = nx.spring_layout(ego_graph_hp, seed=1)  # Seed layout for reproducibility
-nx.draw(ego_graph_hp, pos, node_color="b", node_size=50, with_labels=False)
+nx.draw(ego_graph_hp, pos, node_color="b", node_size=80, with_labels=False)
 
+color_map = []
+for node in ego_graph_hp:
+    if node == 'Harry Potter':
+        color_map.append('red')
+    else:
+        color_map.append('lightblue')
 # Draw ego as large and red
-options = {"node_size": 100, "node_color": "r"}
+options = {"node_size": 80, "node_color": color_map}
 nx.draw_networkx_nodes(ego_graph_hp, pos, **options)
-nx.draw_networkx_labels(ego_graph_hp, nx.spring_layout(ego_graph_hp, seed=1), font_size=4,
+nx.draw_networkx_edges(ego_graph_hp, pos, width=0.5, edge_color='silver')
+nx.draw_networkx_labels(ego_graph_hp, nx.spring_layout(ego_graph_hp, seed=1), font_size=10,
                             font_family='sans-serif', font_weight='bold')
 plt.box(False)
 plt.savefig("grafici/ego_network")
