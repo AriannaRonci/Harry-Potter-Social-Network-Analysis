@@ -62,15 +62,15 @@ def plot_centrality_by_key(centrality_type, graph):
     centrality_df["keys"] = centrality_df["keys"].replace(mapping, regex=True)
     plot_order = centrality_df.groupby('keys')['values'].sum().sort_values(ascending=False).index.values
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(18, 8))
     sns.barplot(x=centrality_df["keys"].tolist(), y=centrality_df["values"].tolist(), order=plot_order)
-    plt.xticks(rotation=80, fontsize=8)
-    plt.xlabel("Characters", fontsize=12)
-    plt.ylabel("Centrality", fontsize=12)
-    plt.title(centrality_type + " Centrality", fontsize=15)
-    #plt.tight_layout()
+    plt.xticks(rotation=80, fontsize=9)
+    plt.xlabel("Characters", fontsize=13)
+    plt.ylabel("Centrality", fontsize=13)
+    plt.title(centrality_type + " Centrality", fontsize=16)
+    plt.tight_layout()
     plt.savefig("grafici/" + centrality_type + ".png")
-    #plt.show()
+    plt.show()
 
 def plot_centrality_distribution(centrality_type, graph):
     centrality = nx.betweenness_centrality(graph)
@@ -146,24 +146,24 @@ graph.add_edges_from(edges_list)
 
 description(graph)
 
-draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
-'''draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
+'''draw_network(nx.spring_layout(graph, k=16/math.sqrt(graph.order())), "spring", edges["type"])
+draw_network(nx.kamada_kawai_layout(graph), "kamada", edges["type"])
 draw_network(nx.random_layout(graph), "random", edges["type"])
 draw_network(nx.shell_layout(graph), "shell", edges["type"])
 draw_network(nx.spiral_layout(graph), "spiral", edges["type"])'''
 
 
-'''plot_centrality_by_key("Betweeness", graph)
+plot_centrality_by_key("Betweenness", graph)
 plot_centrality_by_key("Closeness", graph)
 plot_centrality_by_key("Degree", graph)
 plot_centrality_by_key("Eigenvector", graph)
 
-plot_centrality_distribution("Betweeness", graph)
+'''plot_centrality_distribution("Betweenness", graph)
 plot_centrality_distribution("Closeness", graph)
 plot_centrality_distribution("Degree", graph)
 plot_centrality_distribution("Eigenvector", graph)'''
 
-'''draw(graph, nx.spring_layout(graph), 'Betweeness')
+'''draw(graph, nx.spring_layout(graph), 'Betweenness')
 draw(graph, nx.spring_layout(graph), 'Closeness')
 draw(graph, nx.spring_layout(graph), 'Degree')
 draw(graph, nx.spring_layout(graph), 'Eigenvector')'''
