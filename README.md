@@ -6,6 +6,8 @@ Questa repository è relativa all'uso della libreria Networkx per la social netw
 Il dataset è disponibile al [link](https://github.com/efekarakus/potter-network/tree/master/data).
 Comprende due file csv, uno contenente i 65 personaggi della saga e l'altro riportante le relazioni, positive e negative, tra di loro.
 
+![alt_text](https://github.com/FedericaParlapiano/Progetto-Data-Science---NetworkX/blob/main/grafici/network_kamada.png?raw=true)
+
 ## Analisi della centralità
 
 Dopo aver realizzato il grafico della rete, si è studiata l'importanza dei nodi, evidenziando quali nodi siano più centrali, attraverso l'analisi della centralità.
