@@ -23,3 +23,10 @@ Infine si sono analizzate le strutture:
 - clique,
 - k-core,
 - ego-network.
+
+### Autori
+Progetto realizzato da:
+- [Gobbi Chiara](https://github.com/chiaragii)
+- [Moretti Alice](https://github.com/AliceMoretti00)
+- [Parlapiano Federica](https://github.com/FedericaParlapiano)
+- [Ronci Arianna](https://github.com/AriannaRonci)
