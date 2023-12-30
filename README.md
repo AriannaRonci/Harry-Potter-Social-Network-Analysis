@@ -4,7 +4,7 @@ Questa repository è relativa all'uso della libreria Networkx per la social netw
 
 ## Requisiti
 * Python 3.9 o versioni successive
-* Dipendenze Python: pandas, numpy, statsmodels, transformers, torch, sklearn
+* Dipendenze Python: pandas, networkx, matplotlib, seaborn, numpy
 
 ## Il dataset
 Il dataset è disponibile al [link](https://github.com/efekarakus/potter-network/tree/master/data).
