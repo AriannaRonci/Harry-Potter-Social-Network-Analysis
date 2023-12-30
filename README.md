@@ -2,6 +2,10 @@
 
 Questa repository è relativa all'uso della libreria Networkx per la social network analysis della saga di Harry Potter.
 
+## Requisiti
+* Python 3.9 o versioni successive
+* Dipendenze Python: pandas, numpy, statsmodels, transformers, torch, sklearn
+
 ## Il dataset
 Il dataset è disponibile al [link](https://github.com/efekarakus/potter-network/tree/master/data).
 Comprende due file csv, uno contenente i 65 personaggi della saga e l'altro riportante le relazioni, positive e negative, tra di loro.
